@@ -1,0 +1,44 @@
+-- Table: public.auto
+
+-- DROP TABLE IF EXISTS public.auto;
+
+CREATE TABLE IF NOT EXISTS public.auto
+(
+    id integer NOT NULL DEFAULT nextval('auto_id_seq'::regclass),
+    targa character varying(7) COLLATE pg_catalog."default" NOT NULL,
+    marca character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    modello character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT auto_pkey PRIMARY KEY (id),
+    CONSTRAINT auto_targa_key UNIQUE (targa)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.auto
+    OWNER to postgres;
+    
+    
+****************************************************************************
+
+-- Table: public.infrazione
+
+-- DROP TABLE IF EXISTS public.infrazione;
+
+CREATE TABLE IF NOT EXISTS public.infrazione
+(
+    id integer NOT NULL DEFAULT nextval('infrazione_id_seq'::regclass),
+    data character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    tipo character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    importo double precision NOT NULL,
+    id_auto integer NOT NULL,
+    CONSTRAINT infrazione_pkey PRIMARY KEY (id),
+    CONSTRAINT infrazione_id_auto_fkey FOREIGN KEY (id_auto)
+        REFERENCES public.auto (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.infrazione
+    OWNER to postgres;
